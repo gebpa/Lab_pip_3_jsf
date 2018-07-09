@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="orm.CheckedPoint" table="CheckedPoint">
+
+        <id name="id" type="long">
+            <column name="USER_ID" precision="5" scale="0" />
+            <generator class="assigned" />
+        </id>
+
+        <property name="x" type="double">
+        </property>
+
+        <property name="y" type="double">
+        </property>
+
+        <property name="r" type="int">
+        </property>
+
+        <property name="result" type="string">
+        </property>
+    </class>
+</hibernate-mapping>

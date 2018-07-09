@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+   <f:view>
+
+      <h:head>
+         <title>LabPip3</title>
+         <h:outputStylesheet library = "css" name = "style_index.css" />
+         <h:outputScript library = "js" name = "jquery-3.2.1.js"  />
+         <h:outputScript library = "js" name = "page.js"  />
+      </h:head>
+
+      <h:body onload="drawJSFPointsFromTable(-1)">
+         <h:form id="formForShot">
+         <p:panelGrid >
+            <p:row>
+            <p:column>
+               <p:panelGrid id="X_table">
+                  <p:row >
+                     <p:column colspan="3">X</p:column>
+                  </p:row>
+                  <p:row>
+                     <p:column><h:commandButton  class="x" value="-5" action="#{point.setX(-5)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="-4" action="#{point.setX(-4)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="-3" action="#{point.setX(-3)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                  </p:row>
+                  <p:row>
+                     <p:column><h:commandButton  class="x" value="-2" action="#{point.setX(-2)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="-1" action="#{point.setX(-1)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="0" action="#{point.setX(0)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                  </p:row>
+                  <p:row>
+                     <p:column><h:commandButton  class="x" value="1" action="#{point.setX(1)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="2" action="#{point.setX(2)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton  class="x" value="3" action="#{point.setX(3)}"><f:ajax onevent="changeColor(this)"/></h:commandButton></p:column>
+                  </p:row>
+               </p:panelGrid>
+               </p:column>
+               <p:column rowspan="3">
+                  <div class="img-wrapper">
+                  <h:graphicImage id="graph" library="images" name="#{point.picture}"
+                         onclick="clickPictureJSF(event.pageX - $(this).offset().left, event.pageY - $(this).offset().top, #{point.getR()})">
+                     <p:ajax event="click" update="results" />
+                  </h:graphicImage>
+                  </div>
+            </p:column>
+            </p:row>
+            <p:row>
+               <p:column>
+               <p:panelGrid>
+                  <p:row>
+                  <p:column>Y</p:column>
+                  <p:column>
+                     <h:inputText id="inputY" styleClass="text-input" value="#{point.y}" required="true">
+                        <f:validator validatorId="validators.YValidator" />
+                        <f:ajax render="err" />
+                     </h:inputText>
+                  </p:column>
+                  </p:row>
+               </p:panelGrid>
+                  <h:message for="inputY" id="err" />
+               </p:column>
+            </p:row>
+            <p:row>
+               <p:column>
+               <p:panelGrid id="R_table">
+                  <p:row>
+                     <p:column colspan="3">R</p:column>
+                  </p:row>
+                  <p:row>
+                     <p:column><h:commandButton value="1" action="#{point.setR(1)}"><f:ajax render="graph RR results" onevent="drawJSFPointsFromTable(1)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton value="2" action="#{point.setR(2)}"><f:ajax render="graph RR results" onevent="drawJSFPointsFromTable(2)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton value="3" action="#{point.setR(3)}"><f:ajax render="graph RR results" onevent="drawJSFPointsFromTable(3)"/></h:commandButton></p:column>
+                  </p:row>
+                  <p:row>
+                     <p:column><h:commandButton value="4" action="#{point.setR(4)}"><f:ajax render="graph RR results" onevent="drawJSFPointsFromTable(4)"/></h:commandButton></p:column>
+                     <p:column><h:commandButton value="5" action="#{point.setR(5)}"><f:ajax render="graph RR results" onevent="drawJSFPointsFromTable(5)"/></h:commandButton></p:column>
+                  </p:row>
+               </p:panelGrid>
+               </p:column>
+            </p:row>
+            <p:row>
+               <p:column>
+                  <h:commandButton id="getResult" action="#{point.calculateResult()}"  value="Получить результат" >
+                     <f:ajax render = "results" onevent="drawJSFPointsFromTable(-1)" />
+                  </h:commandButton>
+               </p:column>
+               <p:column>
+                  <h:commandButton action="goToStartPage" value="Перейти на стартовую страницу"/>
+               </p:column>
+            </p:row>
+         </p:panelGrid>
+            <h:inputHidden id="RR" value="#{point.r}"/>
+         </h:form>
+         <h:form id="formForShot1">
+            <h:inputHidden id="inputX" value="#{point.x}"/>
+            <p:remoteCommand name="remoteChangeCommandX" process="inputX"/>
+            <h:inputHidden id="inputY1" value="#{point.y}"/>
+            <p:remoteCommand name="remoteChangeCommandY" process="inputY1"/>
+            <h:inputHidden id="inputR" value="#{point.r}"/>
+            <p:remoteCommand name="remoteChangeCommandR" process="inputR"/>
+            <h:inputHidden id="inputI" value="#{point.i}"/>
+            <p:remoteCommand name="remoteChangeCommandI" process="inputI"/>
+         </h:form>
+
+            <p:dataTable var="point" value="#{point.pointsList}" id="results">
+               <p:row>
+
+               </p:row>
+               <p:column headerText="X">
+                  <h:outputText value="#{point.x}" />
+               </p:column>
+
+               <p:column headerText="Y">
+                  <h:outputText value="#{point.y}" />
+               </p:column>
+
+               <p:column headerText="R">
+                  <h:outputText value="#{point.r}" />
+               </p:column>
+
+               <p:column headerText="Result">
+                  <h:outputText value="#{point.result}" />
+               </p:column>
+            </p:dataTable>
+
+      </h:body>
+
+   </f:view>
+</html>

@@ -1,0 +1,4 @@
+beans\Point.class
+validators\YValidator.class
+orm\CheckedPoint.class
+orm\CheckedPointService.class
